@@ -66,8 +66,3 @@ void printMainMenu()
 	cout << "Press T to transfer money from your account to another account that exists in our banking system!" << endl;
 	cout << "Press W to withdraw money from your bank account!" << endl;
 }
-
-int main()
-{
-	printHeader();
-}
