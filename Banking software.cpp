@@ -1,44 +1,74 @@
-#include <iostream>
+//#include <iostream>
+//#include <string>
+//#include <Windows.h>
+//#include <iomanip>
+//#include <stdlib.h>
+//#include <fstream>
 #include "printMenus.h"
 #include "inputVerifications.h"
-#include <string>
-#include <Windows.h>
-#include <iomanip>
-#include <stdlib.h>
-#include <fstream>
+#include "logInAndRegisterFunctions.h"
+#include "fileFunctions.h"
 using namespace std;
 
-void logIn()
-{
-	cout << "Please, enter your username: ";
-	string username ;
-	USERNAME_INPUT:
-	cin >> username;
-	if (!isValidUsername(username))
-	{
-		cout << endl << "The username must contain only latin letters or symbols!" << endl << "Re-enter your username: ";
-		goto USERNAME_INPUT;
-		cout << endl;
-	}
-	cout << "Please, enter your password: ";
-	//isValidLogInPassword();//da proveri direktno dali syvpada s failovata parola
-}
+const string FILE_NAME = "users.txt";
 
 int main()
 {	
+	START:
+	
+	int fileLength = getFileLength(FILE_NAME);
+
+	string* usernames = new string[fileLength];
+	size_t* passwords = new size_t[fileLength];
+	long long int* balances = new long long int[fileLength];
+
+	fillArraysWithInfo(FILE_NAME, usernames, passwords, balances);
+
+
+
 	printHomeMenu();
 	char firstInput = ' ';
 	CHAR_INPUT:
 	cin >> firstInput;
+	cout << endl;
 	if (!isValidCharInput(firstInput))
 	{
 		cout << "Please, enter a valid character:" << endl;
 		goto CHAR_INPUT;
 	}
+	if (firstInput != 'L' && firstInput != 'l' && firstInput != 'R' && firstInput != 'r' && firstInput != 'Q' && firstInput != 'q')
+	{
+		cout << "Wrong letter was entered, please try again!" << endl;
+		goto CHAR_INPUT;
+	}
 
+	string username = "";
+	string password = "";
+
+	//Login
 	if (firstInput == 'L' || firstInput == 'l')
 	{
-		logIn();
+		if (logInSuccessful(fileLength, usernames, passwords, username, password))
+		{
+			int rowIndex=getUsernameIndex(usernames, username, fileLength);
+			clearConsole();
+			printMainMenu(username,balances[rowIndex]);
+			//mainMenuoperations();
+	    }
 	}
-	//....
+
+	else if (firstInput == 'R' || firstInput == 'r')
+	{
+		if (registerSuccessful(fileLength, FILE_NAME, usernames, passwords, username, password))
+		{
+			cout << "Successful registration! Press C to go back to the home menu or press Q to quit!" << endl;
+			char choice = ' ';
+			cin >> choice;
+			if (choice == 'C' || choice == 'c')
+			{
+				clearConsole();
+				goto START;
+			}
+		}
+	}
 }
