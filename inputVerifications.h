@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -93,6 +94,21 @@ int countSymbols(string a)
 	return counter;
 }
 
+int countSpecialSymbols(string a)
+{
+	int counter = 0;
+	int index = 0;
+	while (a[index] != '\0')
+	{
+		if (isSpecialSymbol(a[index]))
+		{
+			counter++;
+		}
+		index++;
+	}
+	return counter;
+}
+
 bool isValidUsername(string username)
 {
 
@@ -117,7 +133,7 @@ bool isRegisterUsernameCorrect(string username)
 bool isRegisterPassCorrect(string password)
 {
 	int length = password.length();
-	if (length < 5 || countSmallLetters(password) < 1 || countBigLetters(password) < 1)
+	if (length < 5 || countSmallLetters(password) < 1 || countBigLetters(password) < 1 || countSpecialSymbols(password) <1 )
 	{
 		return false;
 	}
@@ -126,14 +142,14 @@ bool isRegisterPassCorrect(string password)
 		if (!isLatinLetter(password[i]) && !isDigit(password[i]) && !isSpecialSymbol(password[i]))
 		{
 			return false;
-		}		
+		}
 	}
 	return true;
 }
 
-bool logInVerification(string usernames[], size_t passwords[], string currentUsername, string currentPass,int usernamesSize, int passwordsSize)
+bool logInVerification(string usernames[], size_t passwords[], string currentUsername, string currentPass, int usernamesSize, int passwordsSize)
 {
-	
+
 	for (int i = 0; i < usernamesSize; i++)
 	{
 		if (currentUsername.compare(usernames[i]) == 0)
@@ -147,7 +163,7 @@ bool logInVerification(string usernames[], size_t passwords[], string currentUse
 	}
 
 	hash<string> stringHashingMethod;
-	size_t currentPassHashValue=stringHashingMethod(currentPass);
+	size_t currentPassHashValue = stringHashingMethod(currentPass);
 
 	for (int i = 0; i < passwordsSize; i++)
 	{

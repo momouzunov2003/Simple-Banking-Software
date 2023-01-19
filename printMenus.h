@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <Windows.h>
@@ -56,13 +57,14 @@ void printHomeMenu()
 }
 
 
-void printMainMenu()
+void printMainMenu(string username, long long int balance)
 {
 	printHeader();
-	cout << "Hello! You have X BGN. You can choose one of the folowing options: " << endl;
+	cout << "Hello, "<<username<<"!You have "<<balance<<" BGN.You can choose one of the folowing options : " << endl;
 	cout << "Press C to cancel your account in our bank system!" << endl;
 	cout << "Press D to make a deposit in our bank!" << endl;
 	cout << "Press L to log out from your account in our bank system!" << endl;
 	cout << "Press T to transfer money from your account to another account that exists in our banking system!" << endl;
 	cout << "Press W to withdraw money from your bank account!" << endl;
 }
+
