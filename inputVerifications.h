@@ -1,3 +1,18 @@
+/**
+*
+* Solution to course project #9
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Momchil Uzunov
+* @idnumber 1MI0600146
+* @compiler VC
+*
+* file containing functions that validate inputs
+*
+*/
+
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -115,6 +130,10 @@ bool isValidUsername(string username)
 	int index = 0;
 	while (username[index] != '\0')
 	{
+		if (username[index] == ':')
+		{
+			return false;
+		}
 		if (!isLatinLetter(username[index]) && !isSymbol(username[index]))
 		{
 			return false;
@@ -133,7 +152,7 @@ bool isRegisterUsernameCorrect(string username)
 bool isRegisterPassCorrect(string password)
 {
 	int length = password.length();
-	if (length < 5 || countSmallLetters(password) < 1 || countBigLetters(password) < 1 || countSpecialSymbols(password) <1 )
+	if (length < 5 || countSmallLetters(password) < 1 || countBigLetters(password) < 1 || countSpecialSymbols(password) < 1)
 	{
 		return false;
 	}
@@ -145,35 +164,4 @@ bool isRegisterPassCorrect(string password)
 		}
 	}
 	return true;
-}
-
-bool logInVerification(string usernames[], size_t passwords[], string currentUsername, string currentPass, int usernamesSize, int passwordsSize)
-{
-
-	for (int i = 0; i < usernamesSize; i++)
-	{
-		if (currentUsername.compare(usernames[i]) == 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	hash<string> stringHashingMethod;
-	size_t currentPassHashValue = stringHashingMethod(currentPass);
-
-	for (int i = 0; i < passwordsSize; i++)
-	{
-		if (currentPassHashValue == passwords[i])
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 }
