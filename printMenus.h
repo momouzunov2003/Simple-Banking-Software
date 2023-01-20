@@ -1,3 +1,18 @@
+/**
+*
+* Solution to course project #9
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Momchil Uzunov
+* @idnumber 1MI0600146
+* @compiler VC
+*
+* file containing functions that print separate menus
+*
+*/
+
 #pragma once
 #include <iostream>
 #include <string>
@@ -57,10 +72,10 @@ void printHomeMenu()
 }
 
 
-void printMainMenu(string username, long long int balance)
+void printMainMenu(string username, long float balance)
 {
 	printHeader();
-	cout << "Hello, "<<username<<"!You have "<<balance<<" BGN.You can choose one of the folowing options : " << endl;
+	cout << "Hello, " << username << "! You have " << fixed << setprecision(2) << balance << " BGN. You can choose one of the folowing options : " << endl;
 	cout << "Press C to cancel your account in our bank system!" << endl;
 	cout << "Press D to make a deposit in our bank!" << endl;
 	cout << "Press L to log out from your account in our bank system!" << endl;
