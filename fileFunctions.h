@@ -1,10 +1,32 @@
+/**
+*
+* Solution to course project #9
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Momchil Uzunov
+* @idnumber 1MI0600146
+* @compiler VC
+*
+* file containing functions that work with the file which contains all the data
+*
+*/
+
 #pragma once
+#include "inputVerifications.h"
+#include "logInAndRegisterFunctions.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "inputVerifications.h"
+#include <cstdio>
 using namespace std;
+
+void quit()
+{
+	exit(0);
+}
 
 int getFileLength(string fileName)
 {
@@ -20,11 +42,11 @@ int getFileLength(string fileName)
 	return numberOfLines;
 }
 
-void fillArraysWithInfo(string fileName, string* usernames, size_t* passwords, long long int* balances)
+void fillArraysWithInfo(string fileName, string* usernames, size_t* passwords, long float* balances)
 {
 	ifstream fileReader(fileName);
 	string input;
-	//stringstream inputCopy;
+
 	if (fileReader.is_open())
 	{
 		int j = 0;
@@ -51,7 +73,7 @@ void fillArraysWithInfo(string fileName, string* usernames, size_t* passwords, l
 				}
 				if (i == 2)
 				{
-					balances[j] = stoi(currentString);
+					balances[j] = stof(currentString);
 				}
 
 				i++;
@@ -62,18 +84,121 @@ void fillArraysWithInfo(string fileName, string* usernames, size_t* passwords, l
 	}
 }
 
-void appendToFile(string fileName, string username, string password, long long int balance)
+void appendToFile(string fileName, string username, string password, long float balance)
 {
 	ofstream fileWriter(fileName, ios::app);
-
+	int fileLength = getFileLength(fileName);
 	if (!fileWriter.is_open())
 	{
 		cout << "Error reading file!" << endl;
-		return;
+		quit();
 	}
 
 	hash<string> stringHashingMethod;
 	size_t currentPassHashValue = stringHashingMethod(password);
-	fileWriter << endl << username << ":" << currentPassHashValue << ":" << balance;
-	fileWriter.close();
+	if (fileLength == 0)
+	{
+		fileWriter << username << ":" << currentPassHashValue << ":" << balance;
+		fileWriter.close();
+	}
+	else
+	{
+		fileWriter << endl << username << ":" << currentPassHashValue << ":" << balance;
+		fileWriter.close();
+	}
+
+}
+
+void deleteLineFromFile(string fileName, int removeLine)
+{
+	string line;
+	ifstream inFile(fileName);
+	ofstream outFile("output.txt");
+
+	if (!outFile.is_open())
+	{
+		cout << endl << "Unable to open temp file!" << endl;
+		quit();
+	}
+
+	int currentLine = 1;
+
+	if (removeLine == 1)
+	{
+		currentLine = 0;
+		while (getline(inFile, line))
+		{
+			currentLine++;
+
+			if (currentLine != 1)
+			{
+				outFile << line << endl;
+			}
+		}
+	}
+	else
+	{
+		while (getline(inFile, line))
+		{
+			if (currentLine == 1)
+			{
+				outFile << line;
+			}
+			else if (currentLine != removeLine)
+			{
+				outFile << endl << line;
+			}
+			currentLine++;
+		}
+	}
+
+	inFile.close();
+	if (remove("users.txt") != 0)
+	{
+		cout << endl << "Unable to delete file!" << endl;
+		quit();
+	}
+	outFile.close();
+	rename("output.txt", "users.txt");
+}
+
+bool rewriteBalance(string usernames[], string username, size_t passwords[], long float balances[], long float amount, int rowIndex)
+{
+
+	ifstream inFile("users.txt");
+	ofstream outFile("output.txt");
+
+	int fileLength = getFileLength("users.txt");
+	long float currentBalance = balances[rowIndex];
+
+	if (!inFile.is_open() || !outFile.is_open())
+	{
+		cout << "Unable to open file!" << endl;
+		quit();
+	}
+
+	string line;
+	int lineNumber = 0;
+
+	while (getline(inFile, line))
+	{
+
+		lineNumber++;
+
+		if (lineNumber == rowIndex + 1)
+		{
+			outFile << username << ":" << passwords[rowIndex] << ":" << amount + currentBalance << endl;
+		}
+		else
+		{
+			outFile << line << endl;
+		}
+	}
+
+	outFile.close();
+	inFile.close();
+
+	remove("users.txt");
+	rename("output.txt", "users.txt");
+	return true;
 }
