@@ -1,7 +1,7 @@
 
 <h1>Simple Banking Software</h1>
 
-A simple banking software that uses a file as a database and is able to log and register new users, make deposits into your "bank balance", make withdrawals, make transfer between users of the bank and more.
+A simple banking software, made for the "Introduction to programming" course at the Faculty Of Mathematics And Informatics Sofia University, that uses a file as a database and is able to log and register new users, make deposits into your "bank balance", make withdrawals, make transfer between users of the bank and more.
 
 <h2>Documentation</h2>
 
