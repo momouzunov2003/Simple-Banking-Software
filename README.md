@@ -65,3 +65,5 @@ Below I've listed all the headers I've made to help me with the project and the 
 6.MAIN FILE:
 
 - The main file contains all the logic behind the successful execution of the whole program.
+
+P.S. I know there's a lot of C style goto in the main function but at that point of time and skill I thought it was very convenient :D
